@@ -1,20 +1,20 @@
 export const carousel = [
   {
-    src: "https://images.unsplash.com/photo-1508973374-3a6b1d8c9f8b?w=1200&q=80&auto=format&fit=crop",
-    alt: "Actividad 1",
+    src: "/images/carlos_lorca_centro-1.png",
+    alt: "Carlos Lorca",
   },
   {
-    src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&q=80&auto=format&fit=crop",
-    alt: "Actividad 2",
+    src: "/images/juventud-socialista-conce-1024x698-1-1.jpg",
+    alt: "Juventud Socialista",
   },
   {
-    src: "https://images.unsplash.com/photo-1495555687392-7f73b9b3b0c6?w=1200&q=80&auto=format&fit=crop",
-    alt: "Actividad 3",
+    src: "/images/Actividades/07-01-1904-JS-Bilbao.webp",
+    alt: "Actividad JS Bilbao",
   },
 ];
 
 export const actividades = [
-  { id: 1, title: "Limpieza comunitaria", src: "/images/actividad1.jpg" },
+  { id: 1, title: "Donación de útiles escolares", src: "/images/Actividades/ActividadUtiles.jpg" },
   { id: 2, title: "Taller de reciclaje", src: "/images/actividad2.jpg" },
   { id: 3, title: "Charla pública", src: "/images/actividad3.jpg" },
 ];
@@ -44,6 +44,7 @@ export const queHacemos = [
   },
 ];
 
-export const heroTitle = "Nuestras actividades en acción";
-export const heroSubtitle =
+export const heroTitle = "Juventudes Socialistas";
+export const heroTitleSub = "Arica y Parinacota";;
+export const heroSubtitle = 
   "Participa, aprende y colabora con nosotros — eventos, talleres y encuentros comunitarios.";

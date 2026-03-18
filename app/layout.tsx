@@ -28,14 +28,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-black">
+        <div className="min-h-screen flex flex-col bg-white">
           <ComponenteHeader />
 
           <main className="flex-1">{children}</main>
 
-          <footer className="border-t bg-white dark:bg-[#080808]">
-            <div className="mx-auto max-w-7xl px-6 py-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
-              © {new Date().getFullYear()} — Nuestras actividades y eventos
+          <footer className="bg-zinc-900 border-t border-zinc-800">
+            <div className="mx-auto max-w-7xl px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-sm text-zinc-400">
+                © {new Date().getFullYear()} — Todos los derechos reservados
+              </p>
             </div>
           </footer>
         </div>

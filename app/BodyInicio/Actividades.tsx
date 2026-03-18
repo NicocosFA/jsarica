@@ -5,7 +5,6 @@ export default function Actividades() {
     <section aria-label="actividades-recientes" className="w-full bg-white">
       <div className="mx-auto max-w-6xl px-6 py-16">
 
-        {/* Encabezado con acento rojo */}
         <div className="flex items-center gap-3 mb-10">
           <span className="block w-1 h-8 bg-red-600 rounded-sm" />
           <h2 className="text-2xl font-bold text-zinc-900 tracking-tight">

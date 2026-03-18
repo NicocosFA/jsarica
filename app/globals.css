@@ -29,3 +29,7 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+.duration-1200 {
+  transition-duration: 1200ms;
+}
