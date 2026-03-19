@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Juventud Socialista - Arica y Parinacota",
+  title: "JS - Arica y Parinacota",
   description: "Sitio oficial de Juventud Socialista Arica y Parinacota",
 };
 
