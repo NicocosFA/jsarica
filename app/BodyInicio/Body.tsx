@@ -50,6 +50,15 @@ export default function Body({ children }: { children?: React.ReactNode }) {
           { top: "92%", left: "46%",  size: 56,  rotate: 25  },
           { top: "87%", left: "66%",  size: 44,  rotate: -8  },
           { top: "91%", left: "86%",  size: 68,  rotate: 15  },
+          { top: "11%", left: "45%",  size: 58,  rotate: -40 },
+          { top: "25%", left: "93%",  size: 42,  rotate: 17  },
+          { top: "40%", left: "15%",  size: 90,  rotate: -22 },
+          { top: "55%", left: "37%",  size: 46,  rotate: 33  },
+          { top: "70%", left: "58%",  size: 62,  rotate: -16 },
+          { top: "83%", left: "40%",  size: 38,  rotate: 27  },
+          { top: "22%", left: "76%",  size: 54,  rotate: -35 },
+          { top: "68%", left: "20%",  size: 44,  rotate: 12  },
+          { top: "38%", left: "52%",  size: 76,  rotate: -9  },
         ].map((p, i) => (
           <img
             key={i}
