@@ -45,6 +45,6 @@ export const queHacemos = [
 ];
 
 export const heroTitle = "Juventud Socialista";
-export const heroTitleSub = "Arica y Parinacota";;
+export const heroTitleSub = "Arica y Parinacota";
 export const heroSubtitle = 
   "Participa, aprende y colabora con nosotros — eventos, talleres y encuentros comunitarios.";
