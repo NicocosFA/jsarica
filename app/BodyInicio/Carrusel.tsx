@@ -39,19 +39,19 @@ export default function Carrusel() {
       <div
         className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center z-10 pointer-events-none"
       >
-        <span className="inline-block bg-red-600 text-white text-xs font-semibold tracking-widest uppercase px-4 py-1 mb-5 rounded-sm">
+        <span className="inline-block bg-red-800 text-white text-xs font-bold tracking-[0.25em] uppercase px-4 py-1 mb-5">
           Bienvenidos
         </span>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white drop-shadow-lg leading-tight max-w-4xl">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white drop-shadow-lg leading-tight max-w-4xl uppercase">
           {heroTitle}
           <span className="block text-red-400">{heroTitleSub}</span>
         </h1>
-        <p className="mt-4 max-w-2xl text-sm sm:text-base md:text-lg text-white/80 leading-relaxed">
+        <p className="mt-4 max-w-2xl text-sm sm:text-base md:text-lg text-white/70 leading-relaxed">
           {heroSubtitle}
         </p>
         <a
           href="/Actividades"
-          className="mt-8 inline-block bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-3 rounded-sm transition-colors pointer-events-auto"
+          className="mt-8 inline-block bg-red-800 hover:bg-red-900 text-white font-bold px-8 py-3 uppercase tracking-widest text-sm transition-colors duration-200 pointer-events-auto"
         >
           Ver actividades
         </a>
@@ -64,7 +64,7 @@ export default function Carrusel() {
             key={i}
             onClick={() => setIndex(i)}
             className={`h-1 rounded-full transition-all duration-300 ${
-              i === index ? "bg-red-500 w-8" : "bg-white/40 w-4"
+              i === index ? "bg-red-700 w-8" : "bg-white/40 w-4"
             }`}
             aria-label={`Ir a imagen ${i + 1}`}
           />

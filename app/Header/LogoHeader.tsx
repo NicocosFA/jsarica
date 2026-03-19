@@ -2,13 +2,9 @@ import Link from "next/link";
 
 export default function LogoHeader() {
   return (
-    <Link href="/" className="flex items-center gap-2">
-      <span className="text-red-600 font-bold text-xl tracking-tight">
-        Nuestras
-      </span>
-      <span className="text-zinc-100 font-bold text-xl tracking-tight">
-        Actividades
-      </span>
+    <Link href="/" className="flex items-center gap-3">
+      <img src="/images/logo/logo.png" alt="Logo" className="h-10 w-auto" />
+      <div className="w-px h-8 bg-white" />
     </Link>
   );
 }

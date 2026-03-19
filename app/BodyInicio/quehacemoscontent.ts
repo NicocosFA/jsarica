@@ -22,7 +22,7 @@ export const actividades = [
 export const presidente = {
   nombre: "Juan Pérez",
   rol: "Presidente",
-  foto: "/images/presidente.jpg",
+  foto: "/images/presidente/Allende_1970-1973_(cropped).jpg",
   bio: "Juan coordina las actividades y representa a la organización en eventos públicos. Tiene amplia experiencia en trabajo comunitario.",
 };
 
