@@ -67,13 +67,6 @@ export default function ComponenteHeader() {
                   {item.label}
                 </a>
               ))}
-              <a
-                href="/login"
-                onClick={() => setOpen(false)}
-                className="mt-4 bg-red-800 text-white text-center font-semibold px-4 py-3 rounded-sm hover:bg-red-950 transition-colors"
-              >
-                Acceder
-              </a>
             </nav>
           </div>
         </div>
