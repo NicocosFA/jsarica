@@ -15,7 +15,7 @@ export default function Footer() {
         </div>
 
         <p className="text-red-300 text-xs">
-          © {new Date().getFullYear()} JSCh · Todos los derechos reservados
+          © {new Date().getFullYear()} JS · Todos los derechos reservados
         </p>
       </div>
     </footer>

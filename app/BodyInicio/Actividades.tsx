@@ -2,7 +2,7 @@ import { actividades } from "./quehacemoscontent";
 
 export default function Actividades() {
   return (
-    <section aria-label="actividades-recientes" className="w-full bg-white">
+    <section aria-label="actividades-recientes" className="w-full bg-white relative">
       <div className="mx-auto max-w-6xl px-6 py-16">
 
         <div className="flex items-center gap-3 mb-10">
@@ -36,6 +36,7 @@ export default function Actividades() {
           ))}
         </div>
       </div>
+      {/* sin fade */}
     </section>
   );
 }

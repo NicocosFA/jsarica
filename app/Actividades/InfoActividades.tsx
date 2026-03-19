@@ -11,10 +11,8 @@ export default function InfoActividades() {
           nuestras reuniones.
         </p>
 
-        <h3 className="text-xl font-medium mt-6 mb-2 text-zinc-900">Quiénes somos</h3>
+        <h3 className="text-xl font-medium mt-6 mb-2 text-zinc-900"></h3>
         <p className="mb-3 text-zinc-700">
-          Somos un grupo de voluntarios que organiza actividades comunitarias
-          abiertas.
         </p>
       </div>
     </section>

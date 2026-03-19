@@ -2,7 +2,7 @@ import { queHacemos } from "./quehacemoscontent";
 
 export default function QueHacemos() {
   return (
-    <section aria-label="que-hacemos" className="w-full bg-red-100 border-t border-red-200">
+    <section aria-label="que-hacemos" className="w-full bg-white relative">
       <div className="mx-auto max-w-6xl px-6 py-16">
 
         <div className="flex items-center gap-3 mb-10">
@@ -27,6 +27,7 @@ export default function QueHacemos() {
           ))}
         </div>
       </div>
+      {/* sin fade */}
     </section>
   );
 }
