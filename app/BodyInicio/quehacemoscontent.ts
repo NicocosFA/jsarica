@@ -1,22 +1,20 @@
 export const carousel = [
   {
-    src: "/images/carlos_lorca_centro-1.png",
+    src: "/images/DiseñoPag/carlos_lorca_centro-1.png",
     alt: "Carlos Lorca",
   },
   {
-    src: "/images/juventud-socialista-conce-1024x698-1-1.jpg",
+    src: "/images/DiseñoPag/juventud-socialista-conce-1024x698-1-1.jpg",
     alt: "Juventud Socialista",
   },
   {
-    src: "/images/Actividades/07-01-1904-JS-Bilbao.webp",
+    src: "/images/DiseñoPag/07-01-1904-JS-Bilbao.webp",
     alt: "Actividad JS Bilbao",
   },
 ];
 
 export const actividades = [
-  { id: 1, title: "Donación de útiles escolares", src: "/images/Actividades/ActividadUtiles.jpg" },
-  { id: 2, title: "Taller de reciclaje", src: "/images/actividad2.jpg" },
-  { id: 3, title: "Charla pública", src: "/images/actividad3.jpg" },
+  { id: 1, title: "Donación de útiles escolares", src: "/images/Actividades/ActividadUtiles/ActividadUtiles.jpg" }
 ];
 
 export const presidente = {
