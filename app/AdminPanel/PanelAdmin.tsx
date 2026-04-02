@@ -8,18 +8,32 @@ import {
   carousel,
   queHacemos,
 } from "../BodyInicio/quehacemoscontent";
+import {
+  misionVision,
+  historia,
+  hitos,
+  conmemoraciones,
+} from "../SobreNosotros/sobrenosotroscontent";
+import {
+  contactoInfo,
+  redesSociales,
+  llamarMilitar,
+} from "../Contacto/contactocontent";
 
-function readStored() {
+function readStored(key: string) {
   try {
-    const raw = localStorage.getItem("siteContent");
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch {
-    return null;
-  }
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
 }
 
+const TABS = ["Inicio", "Sobre Nosotros", "Contacto"] as const;
+type Tab = typeof TABS[number];
+
 export default function PanelAdmin() {
+  const [tab, setTab] = useState<Tab>("Inicio");
+
+  // --- Inicio ---
   const [content, setContent] = useState(() => ({
     heroTitle: heroTitle ?? "",
     heroSubtitle: heroSubtitle ?? "",
@@ -29,163 +43,226 @@ export default function PanelAdmin() {
     queHacemos: queHacemos ?? [],
   }));
 
+  // --- Sobre Nosotros ---
+  const [sobre, setSobre] = useState(() => ({
+    misionVision: { ...misionVision },
+    historia: { ...historia },
+    hitos: [...hitos],
+    conmemoraciones: [...conmemoraciones],
+  }));
+
+  // --- Contacto ---
+  const [contacto, setContacto] = useState(() => ({
+    contactoInfo: { ...contactoInfo },
+    redesSociales: [...redesSociales],
+    llamarMilitar: {
+      ...llamarMilitar,
+      razones: [...llamarMilitar.razones],
+    },
+  }));
+
   useEffect(() => {
-    const stored = readStored();
-    if (stored) setContent((c) => ({ ...c, ...stored }));
+    const s = readStored("siteContent");
+    if (s) setContent((c) => ({ ...c, ...s }));
+    const sn = readStored("sobreNosotrosContent");
+    if (sn) setSobre((c) => ({ ...c, ...sn }));
+    const ct = readStored("contactoContent");
+    if (ct) setContacto((c) => ({ ...c, ...ct }));
   }, []);
 
-  function save() {
+  function saveInicio() {
     localStorage.setItem("siteContent", JSON.stringify(content));
-    alert("Guardado en localStorage (demo)");
+    alert("Guardado");
   }
+
+  function saveSobre() {
+    localStorage.setItem("sobreNosotrosContent", JSON.stringify(sobre));
+    alert("Guardado");
+  }
+
+  function saveContacto() {
+    localStorage.setItem("contactoContent", JSON.stringify(contacto));
+    alert("Guardado");
+  }
+
+  const inputCls = "w-full bg-gray-800 text-white border border-red-800 px-3 py-2 rounded mb-2 text-sm";
+  const labelCls = "block mt-4 mb-1 text-sm text-gray-300 font-semibold uppercase tracking-wide";
 
   return (
     <div className="min-h-screen bg-black p-6 text-white">
-      <div className="max-w-4xl mx-auto bg-gray-900 p-6 rounded shadow-md">
-        <h2 className="text-2xl font-bold mb-4 text-white">Panel Admin (demo)</h2>
+      <div className="max-w-4xl mx-auto">
 
-        <label className="block mt-4 text-sm text-gray-300">Título del carousel (no editable)</label>
-        <div className="w-full bg-gray-800 text-white border border-gray-700 px-3 py-2 rounded">{content.heroTitle}</div>
+        <h2 className="text-2xl font-black text-white uppercase tracking-widest mb-6">Panel Admin</h2>
 
-        <label className="block mt-4 text-white">Subtítulo del carousel</label>
-        <textarea
-          value={content.heroSubtitle}
-          onChange={(e) =>
-            setContent({ ...content, heroSubtitle: e.target.value })
-          }
-          className="w-full bg-gray-800 text-white border border-red-600 px-3 py-2 rounded"
-        />
-
-        <label className="block mt-4 text-white">Presidente</label>
-        <input
-          value={(content.presidente && content.presidente.nombre) || ""}
-          onChange={(e) => setContent({ ...content, presidente: { ...(content.presidente || {}), nombre: e.target.value } })}
-          placeholder="Nombre"
-          className="w-full bg-gray-800 text-white border border-red-600 px-3 py-2 rounded mb-2"
-        />
-        <input
-          value={(content.presidente && content.presidente.rol) || ""}
-          onChange={(e) => setContent({ ...content, presidente: { ...(content.presidente || {}), rol: e.target.value } })}
-          placeholder="Rol"
-          className="w-full bg-gray-800 text-white border border-red-600 px-3 py-2 rounded mb-2"
-        />
-        <div className="mb-2">
-          <div className="text-sm text-gray-300 mb-1">Foto del presidente</div>
-          {content.presidente && content.presidente.foto ? (
-            <div className="mb-2">
-              <img src={content.presidente.foto} alt="Presidente" className="w-24 h-24 object-cover rounded" />
-              <div>
-                <button type="button" className="text-sm px-2 py-1 bg-red-600 rounded text-white mt-2" onClick={() => setContent({ ...content, presidente: { ...(content.presidente || {}), foto: "" } })}>Eliminar foto</button>
-              </div>
-            </div>
-          ) : null}
-          <input type="file" accept="image/*" onChange={(e) => {
-            const f = e.target.files && e.target.files[0];
-            if (!f) return;
-            const reader = new FileReader();
-            reader.onload = () => {
-              setContent({ ...content, presidente: { ...(content.presidente || {}), foto: reader.result as string } });
-            };
-            reader.readAsDataURL(f);
-          }} className="text-sm text-white" />
-        </div>
-        <textarea
-          value={(content.presidente && content.presidente.bio) || ""}
-          onChange={(e) => setContent({ ...content, presidente: { ...(content.presidente || {}), bio: e.target.value } })}
-          placeholder="Bio"
-          className="w-full bg-gray-800 text-white border border-red-600 px-3 py-2 rounded h-24"
-        />
-
-        <label className="block mt-4 text-white">Actividades</label>
-        <div className="space-y-3">
-          {(content.actividades || []).map((a: any, idx: number) => (
-            <div key={idx} className="bg-gray-800 p-3 rounded border border-gray-700">
-              <input className="w-full bg-gray-800 text-white px-2 py-1 rounded mb-2" value={a.title || ""} onChange={(e) => {
-                const arr = [...(content.actividades || [])]; arr[idx] = { ...(arr[idx] || {}), title: e.target.value }; setContent({ ...content, actividades: arr });
-              }} placeholder="Título" />
-              <div className="mt-2">
-                <div className="text-sm text-gray-300 mb-1">Imágenes</div>
-                <div className="flex gap-2 flex-wrap mb-2">
-                  {(a.images || []).map((im: any, i: number) => (
-                    <div key={i} className="relative">
-                      <img src={im.src} alt={im.alt || ""} className="w-20 h-20 object-cover rounded" />
-                      <button type="button" className="absolute -top-1 -right-1 bg-red-600 text-white rounded px-1" onClick={() => { const arr = [...(content.actividades || [])]; const imgs = [...((arr[idx] && arr[idx].images) || [])]; imgs.splice(i, 1); arr[idx] = { ...(arr[idx] || {}), images: imgs }; setContent({ ...content, actividades: arr }); }}>x</button>
-                    </div>
-                  ))}
-                </div>
-                <input type="file" accept="image/*" onChange={(e) => {
-                  const f = e.target.files && e.target.files[0];
-                  if (!f) return;
-                  const reader = new FileReader();
-                  reader.onload = () => {
-                    const arr = [...(content.actividades || [])];
-                    const item = { ...(arr[idx] || {}), images: [...((arr[idx] && arr[idx].images) || []), { src: reader.result as string, alt: "" }] };
-                    arr[idx] = item;
-                    setContent({ ...content, actividades: arr });
-                  };
-                  reader.readAsDataURL(f);
-                }} />
-              </div>
-              <div className="flex gap-2 mt-2">
-                <button type="button" className="text-sm px-2 py-1 bg-red-600 rounded text-white" onClick={() => { const arr = [...(content.actividades || [])]; arr.splice(idx, 1); setContent({ ...content, actividades: arr }); }}>Eliminar actividad</button>
-              </div>
-            </div>
+        {/* Tabs */}
+        <div className="flex gap-px mb-8 bg-red-900">
+          {TABS.map((t) => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`px-6 py-3 text-sm font-bold uppercase tracking-widest transition-colors ${
+                tab === t ? "bg-red-700 text-white" : "bg-gray-900 text-gray-400 hover:text-white"
+              }`}
+            >
+              {t}
+            </button>
           ))}
-          <button type="button" className="mt-2 bg-red-600 text-white px-3 py-2 rounded" onClick={() => { const arr = [...(content.actividades || [])]; arr.push({ id: Date.now(), title: "Nueva actividad", images: [] }); setContent({ ...content, actividades: arr }); }}>Añadir actividad</button>
         </div>
 
-          <label className="block mt-4 text-white">Carousel (imagenes)</label>
-          <div className="space-y-3">
-            {(content.carousel || []).map((c: any, idx: number) => (
-              <div key={idx} className="bg-gray-800 p-3 rounded border border-gray-700">
-                <input className="w-full bg-gray-800 text-white px-2 py-1 rounded mb-2" value={c.src || ""} onChange={(e) => { const arr = [...(content.carousel || [])]; arr[idx] = { ...(arr[idx] || {}), src: e.target.value }; setContent({ ...content, carousel: arr }); }} placeholder="URL de imagen" />
-                <input className="w-full bg-gray-800 text-white px-2 py-1 rounded" value={c.alt || ""} onChange={(e) => { const arr = [...(content.carousel || [])]; arr[idx] = { ...(arr[idx] || {}), alt: e.target.value }; setContent({ ...content, carousel: arr }); }} placeholder="Alt/Texto" />
-                <div className="flex gap-2 mt-2">
-                  <button type="button" className="text-sm px-2 py-1 bg-red-600 rounded text-white" onClick={() => { const arr = [...(content.carousel || [])]; arr.splice(idx, 1); setContent({ ...content, carousel: arr }); }}>Eliminar</button>
+        {/* ── TAB INICIO ── */}
+        {tab === "Inicio" && (
+          <div className="bg-gray-900 p-6 rounded shadow-md space-y-2">
+
+            <label className={labelCls}>Subtítulo del carousel</label>
+            <textarea value={content.heroSubtitle} onChange={(e) => setContent({ ...content, heroSubtitle: e.target.value })} className={inputCls + " h-20"} />
+
+            <label className={labelCls}>Presidente</label>
+            <input value={content.presidente?.nombre ?? ""} onChange={(e) => setContent({ ...content, presidente: { ...content.presidente, nombre: e.target.value } })} placeholder="Nombre" className={inputCls} />
+            <input value={content.presidente?.rol ?? ""} onChange={(e) => setContent({ ...content, presidente: { ...content.presidente, rol: e.target.value } })} placeholder="Rol" className={inputCls} />
+            <textarea value={content.presidente?.bio ?? ""} onChange={(e) => setContent({ ...content, presidente: { ...content.presidente, bio: e.target.value } })} placeholder="Bio" className={inputCls + " h-24"} />
+
+            <label className={labelCls}>Qué hacemos</label>
+            <div className="space-y-3">
+              {content.queHacemos.map((q: any, idx: number) => (
+                <div key={idx} className="bg-gray-800 p-3 rounded border border-gray-700">
+                  <input className={inputCls} value={q.title ?? ""} onChange={(e) => { const arr = [...content.queHacemos]; arr[idx] = { ...arr[idx], title: e.target.value }; setContent({ ...content, queHacemos: arr }); }} placeholder="Título" />
+                  <textarea className={inputCls + " h-16"} value={q.description ?? ""} onChange={(e) => { const arr = [...content.queHacemos]; arr[idx] = { ...arr[idx], description: e.target.value }; setContent({ ...content, queHacemos: arr }); }} placeholder="Descripción" />
+                  <button type="button" className="text-xs px-2 py-1 bg-red-800 rounded text-white" onClick={() => { const arr = [...content.queHacemos]; arr.splice(idx, 1); setContent({ ...content, queHacemos: arr }); }}>Eliminar</button>
                 </div>
-              </div>
-            ))}
-            <button type="button" className="mt-2 bg-red-600 text-white px-3 py-2 rounded" onClick={() => { const arr = [...(content.carousel || [])]; arr.push({ src: "", alt: "" }); setContent({ ...content, carousel: arr }); }}>Añadir imagen</button>
+              ))}
+              <button type="button" className="bg-red-800 text-white px-3 py-2 rounded text-sm" onClick={() => setContent({ ...content, queHacemos: [...content.queHacemos, { title: "", description: "" }] })}>+ Añadir</button>
+            </div>
+
+            <label className={labelCls}>Actividades</label>
+            <div className="space-y-3">
+              {content.actividades.map((a: any, idx: number) => (
+                <div key={idx} className="bg-gray-800 p-3 rounded border border-gray-700">
+                  <input className={inputCls} value={a.title ?? ""} onChange={(e) => { const arr = [...content.actividades]; arr[idx] = { ...arr[idx], title: e.target.value }; setContent({ ...content, actividades: arr }); }} placeholder="Título" />
+                  <button type="button" className="text-xs px-2 py-1 bg-red-800 rounded text-white" onClick={() => { const arr = [...content.actividades]; arr.splice(idx, 1); setContent({ ...content, actividades: arr }); }}>Eliminar</button>
+                </div>
+              ))}
+              <button type="button" className="bg-red-800 text-white px-3 py-2 rounded text-sm" onClick={() => setContent({ ...content, actividades: [...content.actividades, { id: Date.now(), title: "", src: "" }] })}>+ Añadir</button>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button onClick={saveInicio} className="bg-red-700 hover:bg-red-600 text-white font-bold px-6 py-2 uppercase tracking-widest text-sm transition-colors">Guardar</button>
+              <button onClick={() => { localStorage.removeItem("siteContent"); setContent({ heroTitle, heroSubtitle, presidente, actividades, carousel, queHacemos }); }} className="border border-gray-600 text-gray-400 hover:text-white px-6 py-2 text-sm uppercase tracking-widest transition-colors">Reset</button>
+            </div>
           </div>
+        )}
 
-        <label className="block mt-4 text-white">Qué hacemos</label>
-        <div className="space-y-3">
-          {(content.queHacemos || []).map((q: any, idx: number) => (
-            <div key={idx} className="bg-gray-800 p-3 rounded border border-gray-700">
-              <input className="w-full bg-gray-800 text-white px-2 py-1 rounded mb-2" value={q.title || ""} onChange={(e) => { const arr = [...(content.queHacemos || [])]; arr[idx] = { ...(arr[idx] || {}), title: e.target.value }; setContent({ ...content, queHacemos: arr }); }} placeholder="Título" />
-              <textarea className="w-full bg-gray-800 text-white px-2 py-1 rounded" value={q.description || ""} onChange={(e) => { const arr = [...(content.queHacemos || [])]; arr[idx] = { ...(arr[idx] || {}), description: e.target.value }; setContent({ ...content, queHacemos: arr }); }} placeholder="Descripción" />
-              <div className="flex gap-2 mt-2">
-                <button type="button" className="text-sm px-2 py-1 bg-red-600 rounded text-white" onClick={() => { const arr = [...(content.queHacemos || [])]; arr.splice(idx, 1); setContent({ ...content, queHacemos: arr }); }}>Eliminar</button>
-              </div>
+        {/* ── TAB SOBRE NOSOTROS ── */}
+        {tab === "Sobre Nosotros" && (
+          <div className="bg-gray-900 p-6 rounded shadow-md space-y-2">
+
+            <label className={labelCls}>Misión</label>
+            <textarea value={sobre.misionVision.mision} onChange={(e) => setSobre({ ...sobre, misionVision: { ...sobre.misionVision, mision: e.target.value } })} className={inputCls + " h-24"} />
+
+            <label className={labelCls}>Visión</label>
+            <textarea value={sobre.misionVision.vision} onChange={(e) => setSobre({ ...sobre, misionVision: { ...sobre.misionVision, vision: e.target.value } })} className={inputCls + " h-24"} />
+
+            <label className={labelCls}>Historia — párrafo 1</label>
+            <textarea value={sobre.historia.texto1} onChange={(e) => setSobre({ ...sobre, historia: { ...sobre.historia, texto1: e.target.value } })} className={inputCls + " h-20"} />
+            <label className={labelCls}>Historia — párrafo 2</label>
+            <textarea value={sobre.historia.texto2} onChange={(e) => setSobre({ ...sobre, historia: { ...sobre.historia, texto2: e.target.value } })} className={inputCls + " h-20"} />
+            <label className={labelCls}>Historia — párrafo 3</label>
+            <textarea value={sobre.historia.texto3} onChange={(e) => setSobre({ ...sobre, historia: { ...sobre.historia, texto3: e.target.value } })} className={inputCls + " h-20"} />
+
+            <label className={labelCls}>Hitos históricos</label>
+            <div className="space-y-3">
+              {sobre.hitos.map((h, idx) => (
+                <div key={idx} className="bg-gray-800 p-3 rounded border border-gray-700">
+                  <input className={inputCls} value={h.año} onChange={(e) => { const arr = [...sobre.hitos]; arr[idx] = { ...arr[idx], año: e.target.value }; setSobre({ ...sobre, hitos: arr }); }} placeholder="Año" />
+                  <textarea className={inputCls + " h-16"} value={h.hito} onChange={(e) => { const arr = [...sobre.hitos]; arr[idx] = { ...arr[idx], hito: e.target.value }; setSobre({ ...sobre, hitos: arr }); }} placeholder="Descripción" />
+                  <button type="button" className="text-xs px-2 py-1 bg-red-800 rounded text-white" onClick={() => { const arr = [...sobre.hitos]; arr.splice(idx, 1); setSobre({ ...sobre, hitos: arr }); }}>Eliminar</button>
+                </div>
+              ))}
+              <button type="button" className="bg-red-800 text-white px-3 py-2 rounded text-sm" onClick={() => setSobre({ ...sobre, hitos: [...sobre.hitos, { año: "", hito: "" }] })}>+ Añadir hito</button>
             </div>
-          ))}
-          <button type="button" className="mt-2 bg-red-600 text-white px-3 py-2 rounded" onClick={() => { const arr = [...(content.queHacemos || [])]; arr.push({ title: "Nuevo", description: "" }); setContent({ ...content, queHacemos: arr }); }}>Añadir item</button>
-        </div>
 
-        <div className="flex gap-2 mt-4">
-          <button
-            onClick={save}
-            className="bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Guardar
-          </button>
-          <button
-            onClick={() => {
-              localStorage.removeItem("siteContent");
-              setContent({
-                heroTitle: heroTitle,
-                heroSubtitle: heroSubtitle,
-                presidente: presidente,
-                actividades: actividades,
-                carousel: carousel,
-                queHacemos: queHacemos,
-              });
-            }}
-            className="px-4 py-2 border border-white rounded text-white"
-          >
-            Reset
-          </button>
-        </div>
+            <label className={labelCls}>Fechas que conmemoramos</label>
+            <div className="space-y-3">
+              {sobre.conmemoraciones.map((c, idx) => (
+                <div key={idx} className="bg-gray-800 p-3 rounded border border-gray-700">
+                  <input className={inputCls} value={c.fecha} onChange={(e) => { const arr = [...sobre.conmemoraciones]; arr[idx] = { ...arr[idx], fecha: e.target.value }; setSobre({ ...sobre, conmemoraciones: arr }); }} placeholder="Fecha (ej: 19 Abril)" />
+                  <input className={inputCls} value={c.titulo} onChange={(e) => { const arr = [...sobre.conmemoraciones]; arr[idx] = { ...arr[idx], titulo: e.target.value }; setSobre({ ...sobre, conmemoraciones: arr }); }} placeholder="Título" />
+                  <textarea className={inputCls + " h-16"} value={c.desc} onChange={(e) => { const arr = [...sobre.conmemoraciones]; arr[idx] = { ...arr[idx], desc: e.target.value }; setSobre({ ...sobre, conmemoraciones: arr }); }} placeholder="Descripción" />
+                  <button type="button" className="text-xs px-2 py-1 bg-red-800 rounded text-white" onClick={() => { const arr = [...sobre.conmemoraciones]; arr.splice(idx, 1); setSobre({ ...sobre, conmemoraciones: arr }); }}>Eliminar</button>
+                </div>
+              ))}
+              <button type="button" className="bg-red-800 text-white px-3 py-2 rounded text-sm" onClick={() => setSobre({ ...sobre, conmemoraciones: [...sobre.conmemoraciones, { fecha: "", titulo: "", desc: "" }] })}>+ Añadir fecha</button>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button onClick={saveSobre} className="bg-red-700 hover:bg-red-600 text-white font-bold px-6 py-2 uppercase tracking-widest text-sm transition-colors">Guardar</button>
+              <button onClick={() => { localStorage.removeItem("sobreNosotrosContent"); setSobre({ misionVision: { ...misionVision }, historia: { ...historia }, hitos: [...hitos], conmemoraciones: [...conmemoraciones] }); }} className="border border-gray-600 text-gray-400 hover:text-white px-6 py-2 text-sm uppercase tracking-widest transition-colors">Reset</button>
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB CONTACTO ── */}
+        {tab === "Contacto" && (
+          <div className="bg-gray-900 p-6 rounded shadow-md space-y-2">
+
+            <label className={labelCls}>Correo</label>
+            <input value={contacto.contactoInfo.email} onChange={(e) => setContacto({ ...contacto, contactoInfo: { ...contacto.contactoInfo, email: e.target.value } })} className={inputCls} />
+
+            <label className={labelCls}>Teléfono</label>
+            <input value={contacto.contactoInfo.telefono} onChange={(e) => setContacto({ ...contacto, contactoInfo: { ...contacto.contactoInfo, telefono: e.target.value } })} className={inputCls} />
+
+            <label className={labelCls}>Dirección</label>
+            <input value={contacto.contactoInfo.direccion} onChange={(e) => setContacto({ ...contacto, contactoInfo: { ...contacto.contactoInfo, direccion: e.target.value } })} className={inputCls} />
+
+            <label className={labelCls}>Horario</label>
+            <input value={contacto.contactoInfo.horario} onChange={(e) => setContacto({ ...contacto, contactoInfo: { ...contacto.contactoInfo, horario: e.target.value } })} className={inputCls} />
+
+            <label className={labelCls}>Redes sociales</label>
+            <div className="space-y-3">
+              {contacto.redesSociales.map((r, idx) => (
+                <div key={idx} className="bg-gray-800 p-3 rounded border border-gray-700">
+                  <input className={inputCls} value={r.nombre} onChange={(e) => { const arr = [...contacto.redesSociales]; arr[idx] = { ...arr[idx], nombre: e.target.value }; setContacto({ ...contacto, redesSociales: arr }); }} placeholder="Nombre (ej: Instagram)" />
+                  <input className={inputCls} value={r.url} onChange={(e) => { const arr = [...contacto.redesSociales]; arr[idx] = { ...arr[idx], url: e.target.value }; setContacto({ ...contacto, redesSociales: arr }); }} placeholder="URL" />
+                  <input className={inputCls} value={r.handle} onChange={(e) => { const arr = [...contacto.redesSociales]; arr[idx] = { ...arr[idx], handle: e.target.value }; setContacto({ ...contacto, redesSociales: arr }); }} placeholder="Handle (ej: @usuario)" />
+                  <button type="button" className="text-xs px-2 py-1 bg-red-800 rounded text-white" onClick={() => { const arr = [...contacto.redesSociales]; arr.splice(idx, 1); setContacto({ ...contacto, redesSociales: arr }); }}>Eliminar</button>
+                </div>
+              ))}
+              <button type="button" className="bg-red-800 text-white px-3 py-2 rounded text-sm" onClick={() => setContacto({ ...contacto, redesSociales: [...contacto.redesSociales, { nombre: "", url: "", handle: "" }] })}>+ Añadir red</button>
+            </div>
+
+            <label className={labelCls}>Llamar a militar — Título</label>
+            <input value={contacto.llamarMilitar.titulo} onChange={(e) => setContacto({ ...contacto, llamarMilitar: { ...contacto.llamarMilitar, titulo: e.target.value } })} className={inputCls} />
+
+            <label className={labelCls}>Subtítulo</label>
+            <input value={contacto.llamarMilitar.subtitulo} onChange={(e) => setContacto({ ...contacto, llamarMilitar: { ...contacto.llamarMilitar, subtitulo: e.target.value } })} className={inputCls} />
+
+            <label className={labelCls}>Cuerpo</label>
+            <textarea value={contacto.llamarMilitar.cuerpo} onChange={(e) => setContacto({ ...contacto, llamarMilitar: { ...contacto.llamarMilitar, cuerpo: e.target.value } })} className={inputCls + " h-24"} />
+
+            <label className={labelCls}>Texto del botón CTA</label>
+            <input value={contacto.llamarMilitar.cta} onChange={(e) => setContacto({ ...contacto, llamarMilitar: { ...contacto.llamarMilitar, cta: e.target.value } })} className={inputCls} />
+
+            <label className={labelCls}>URL del botón CTA</label>
+            <input value={contacto.llamarMilitar.ctaUrl} onChange={(e) => setContacto({ ...contacto, llamarMilitar: { ...contacto.llamarMilitar, ctaUrl: e.target.value } })} className={inputCls} />
+
+            <label className={labelCls}>Razones para militar</label>
+            <div className="space-y-3">
+              {contacto.llamarMilitar.razones.map((r, idx) => (
+                <div key={idx} className="bg-gray-800 p-3 rounded border border-gray-700">
+                  <input className={inputCls} value={r.titulo} onChange={(e) => { const arr = [...contacto.llamarMilitar.razones]; arr[idx] = { ...arr[idx], titulo: e.target.value }; setContacto({ ...contacto, llamarMilitar: { ...contacto.llamarMilitar, razones: arr } }); }} placeholder="Título" />
+                  <textarea className={inputCls + " h-16"} value={r.desc} onChange={(e) => { const arr = [...contacto.llamarMilitar.razones]; arr[idx] = { ...arr[idx], desc: e.target.value }; setContacto({ ...contacto, llamarMilitar: { ...contacto.llamarMilitar, razones: arr } }); }} placeholder="Descripción" />
+                  <button type="button" className="text-xs px-2 py-1 bg-red-800 rounded text-white" onClick={() => { const arr = [...contacto.llamarMilitar.razones]; arr.splice(idx, 1); setContacto({ ...contacto, llamarMilitar: { ...contacto.llamarMilitar, razones: arr } }); }}>Eliminar</button>
+                </div>
+              ))}
+              <button type="button" className="bg-red-800 text-white px-3 py-2 rounded text-sm" onClick={() => setContacto({ ...contacto, llamarMilitar: { ...contacto.llamarMilitar, razones: [...contacto.llamarMilitar.razones, { titulo: "", desc: "" }] } })}>+ Añadir razón</button>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button onClick={saveContacto} className="bg-red-700 hover:bg-red-600 text-white font-bold px-6 py-2 uppercase tracking-widest text-sm transition-colors">Guardar</button>
+              <button onClick={() => { localStorage.removeItem("contactoContent"); setContacto({ contactoInfo: { ...contactoInfo }, redesSociales: [...redesSociales], llamarMilitar: { ...llamarMilitar, razones: [...llamarMilitar.razones] } }); }} className="border border-gray-600 text-gray-400 hover:text-white px-6 py-2 text-sm uppercase tracking-widest transition-colors">Reset</button>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
