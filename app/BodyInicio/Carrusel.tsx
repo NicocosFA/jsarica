@@ -51,9 +51,12 @@ export default function Carrusel() {
         </p>
         <a
           href="/Contacto"
-          className="mt-8 inline-block bg-red-800 hover:bg-red-900 text-white font-bold px-8 py-3 uppercase tracking-widest text-sm transition-colors duration-200 pointer-events-auto"
+          className="mt-8 inline-flex items-center gap-2 bg-white text-red-900 hover:bg-red-100 font-black px-8 py-3 uppercase tracking-widest text-sm transition-colors duration-200 pointer-events-auto border-2 border-white hover:border-red-200"
         >
           Quiero ser parte
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
         </a>
       </div>
 

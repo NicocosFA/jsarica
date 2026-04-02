@@ -62,7 +62,7 @@ export default function ComponenteHeader() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="text-white font-medium px-3 py-3 rounded hover:bg-red-950 hover:text-white transition-colors duration-200"
+                  className="text-white font-bold px-4 py-3 border border-white/10 hover:bg-red-800 hover:border-red-700 transition-colors duration-200 rounded"
                 >
                   {item.label}
                 </a>
