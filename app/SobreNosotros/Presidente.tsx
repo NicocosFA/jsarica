@@ -1,6 +1,6 @@
 export default function PresidenteSection() {
   return (
-    <section className="w-full bg-red-800">
+    <section className="w-full bg-red-900">
       <div className="mx-auto max-w-6xl px-6 py-16">
 
         <div className="flex items-center gap-3 mb-10">
