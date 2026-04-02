@@ -55,8 +55,8 @@ export default function ComponenteHeader() {
               {[
                 { href: "/", label: "Inicio" },
                 { href: "/Actividades", label: "Actividades" },
-                { href: "/sobre-nosotros", label: "Sobre nosotros" },
-                { href: "/contacto", label: "Contacto" },
+                { href: "/SobreNosotros", label: "Sobre nosotros" },
+                { href: "/Contacto", label: "Contacto" },
               ].map((item) => (
                 <a
                   key={item.href}

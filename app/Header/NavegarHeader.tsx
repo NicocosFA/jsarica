@@ -9,10 +9,10 @@ export default function NavegarHeader() {
       <Link href="/Actividades" className="text-sm font-semibold text-white hover:text-red-300 transition-colors duration-200 uppercase tracking-wide">
         Actividades
       </Link>
-      <Link href="/sobre-nosotros" className="text-sm font-semibold text-white hover:text-red-300 transition-colors duration-200 uppercase tracking-wide">
+      <Link href="/SobreNosotros" className="text-sm font-semibold text-white hover:text-red-300 transition-colors duration-200 uppercase tracking-wide">
         Sobre nosotros
       </Link>
-      <Link href="/contacto" className="text-sm font-semibold text-white hover:text-red-300 transition-colors duration-200 uppercase tracking-wide">
+      <Link href="/Contacto" className="text-sm font-semibold text-white hover:text-red-300 transition-colors duration-200 uppercase tracking-wide">
         Contacto
       </Link>
     </nav>
