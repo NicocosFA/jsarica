@@ -1,4 +1,3 @@
-import LlamarMilitar from "./LlamarMilitar";
 import Contacto from "./Contacto";
 import RedesSociales from "./RedesSociales";
 
@@ -25,7 +24,6 @@ export default function Body() {
 
       <Contacto />
       <RedesSociales />
-      <LlamarMilitar />
 
     </main>
   );

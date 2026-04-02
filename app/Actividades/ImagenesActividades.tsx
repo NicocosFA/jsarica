@@ -2,32 +2,25 @@
 import { useEffect, useState } from "react";
 import ModalGaleria from "./ModalGaleria";
 
+type Actividad = { nombre: string; portada: string; total: number };
+
 export default function ImagenesActividades() {
-  const [actividades, setActividades] = useState<any[]>([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [actividadSeleccionada, setActividadSeleccionada] = useState<any>(null);
+  const [actividades, setActividades] = useState<Actividad[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [seleccionada, setSeleccionada] = useState<Actividad | null>(null);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("siteContent");
-      if (!raw) return;
-      const parsed = JSON.parse(raw);
-      setActividades(parsed.actividades || []);
-    } catch (e) {
-      // ignore
-    }
+    fetch("/api/imagenes")
+      .then((r) => r.json())
+      .then((data) => setActividades(data.actividades || []))
+      .catch(() => setActividades([]))
+      .finally(() => setLoading(false));
   }, []);
 
-  const fallback = [
-    { title: "Donación de útiles escolares", images: [{ src: "/images/Actividades/ActividadUtiles/ActividadUtiles.jpg" }] },
-  ];
-
-  const list = actividades.length ? actividades : fallback;
-
-  const handleImageClick = (actividad: any) => {
-    setActividadSeleccionada(actividad);
-    setModalOpen(true);
-  };
+  // Convierte nombre de carpeta a título legible: "ActividadUtiles" → "Actividad Utiles"
+  function toTitulo(nombre: string) {
+    return nombre.replace(/([A-Z])/g, " $1").trim();
+  }
 
   return (
     <>
@@ -41,32 +34,47 @@ export default function ImagenesActividades() {
             </h2>
           </div>
 
-          <div className="space-y-8">
-            {list.map((act, ai) => (
-              <div key={ai}>
-                <h3 className="text-white font-bold mb-3">{act.title || `Actividad ${ai + 1}`}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-red-800">
-                  {(act.images || [{ src: act.src }]).map((img: any, i: number) => (
-                    <article 
-                      key={i} 
-                      className="group overflow-hidden bg-red-900 relative cursor-pointer"
-                      onClick={() => handleImageClick(act)}
-                    >
-                      <div className="relative h-56 overflow-hidden">
-                        <img 
-                          src={img.src} 
-                          alt={img.alt || act.title || ""} 
-                          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 brightness-75"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-red-950/80 to-transparent" />
-                        <p className="absolute bottom-3 left-4 text-white font-bold text-sm uppercase tracking-wide">
-                          {img.alt || act.title || "Imagen"}
-                        </p>
-                      </div>
-                    </article>
-                  ))}
+          {loading && (
+            <p className="text-red-300 text-sm">Cargando actividades...</p>
+          )}
+
+          {!loading && actividades.length === 0 && (
+            <p className="text-red-300 text-sm">No hay actividades disponibles aún.</p>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-red-800">
+            {actividades.map((act) => (
+              <article
+                key={act.nombre}
+                className="group overflow-hidden bg-red-900 relative cursor-pointer"
+                onClick={() => setSeleccionada(act)}
+              >
+                <div className="relative h-56 overflow-hidden">
+                  <img
+                    src={act.portada}
+                    alt={toTitulo(act.nombre)}
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 brightness-75"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-red-950/80 to-transparent" />
+
+                  {/* Título */}
+                  <p className="absolute bottom-3 left-4 text-white font-black text-sm uppercase tracking-wide">
+                    {toTitulo(act.nombre)}
+                  </p>
+
+                  {/* Contador de fotos */}
+                  <span className="absolute top-3 right-3 bg-red-800/80 text-white text-xs font-bold px-2 py-1 uppercase tracking-wide">
+                    {act.total} {act.total === 1 ? "foto" : "fotos"}
+                  </span>
+
+                  {/* Overlay hover */}
+                  <div className="absolute inset-0 bg-red-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span className="text-white font-black text-xs uppercase tracking-widest border border-white px-4 py-2">
+                      Ver galería
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
 
@@ -75,11 +83,11 @@ export default function ImagenesActividades() {
           </p>
         </div>
       </section>
-      
-      {modalOpen && (
-        <ModalGaleria 
-          actividad={actividadSeleccionada} 
-          onClose={() => setModalOpen(false)} 
+
+      {seleccionada && (
+        <ModalGaleria
+          actividad={{ title: toTitulo(seleccionada.nombre), carpeta: seleccionada.nombre }}
+          onClose={() => setSeleccionada(null)}
         />
       )}
     </>

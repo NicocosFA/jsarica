@@ -50,10 +50,10 @@ export default function Carrusel() {
           {heroSubtitle}
         </p>
         <a
-          href="/Actividades"
+          href="/Contacto"
           className="mt-8 inline-block bg-red-800 hover:bg-red-900 text-white font-bold px-8 py-3 uppercase tracking-widest text-sm transition-colors duration-200 pointer-events-auto"
         >
-          Ver actividades
+          Quiero ser parte
         </a>
       </div>
 

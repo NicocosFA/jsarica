@@ -3,11 +3,13 @@ import Carrusel from "./Carrusel";
 import Actividades from "./Actividades";
 import QueHacemos from "./QueHacemos";
 import Presidente from "./Presidente";
+import LlamarMilitar from "./LlamarMilitar";
 
 export default function Body({ children }: { children?: React.ReactNode }) {
   return (
     <div id="inicio">
       <Carrusel />
+      <LlamarMilitar />
       {/* Fondo compartido con patrón de puños */}
       <div className="relative" style={{ backgroundColor: "white" }}>
         {/* Overlay blanco semitransparente para suavizar el patrón */}
