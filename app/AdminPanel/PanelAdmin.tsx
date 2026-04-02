@@ -105,11 +105,15 @@ export default function PanelAdmin() {
     llamarMilitar: { ...llamarMilitar, razones: [...llamarMilitar.razones] },
   }));
 
+  const defaultMotivacion = { titulo: "El cambio lo hacemos juntos", subtitulo: "La Juventud Socialista te necesita", cuerpo: "No importa de dónde vengas ni cuánto sabes de política. Lo que importa es que quieres un mundo más justo.", cta: "Quiero ser parte", ctaUrl: "/Contacto" };
+  const [motivacion, setMotivacion] = useState<any>(() => ({ ...defaultMotivacion }));
+
   useEffect(() => {
     const s = readStored("siteContent"); if (s) setContent((c: any) => ({ ...c, ...s }));
     const sn = readStored("sobreNosotrosContent"); if (sn) setSobre((c: any) => ({ ...c, ...sn }));
     const ct = readStored("contactoContent"); if (ct) setContacto((c: any) => ({ ...c, ...ct }));
     const at = readStored("actividadesContent"); if (at) setActividadesTab((c: any) => ({ ...c, ...at }));
+    const mv = readStored("motivacionContent"); if (mv) setMotivacion((c: any) => ({ ...c, ...mv }));
   }, []);
 
   return (
@@ -207,7 +211,16 @@ export default function PanelAdmin() {
                 <AddBtn label="Añadir actividad" onClick={() => setContent({ ...content, actividades: [...content.actividades, { id: Date.now(), title: "", tipo: "imagen", src: "", descripcion: "" }] })} />
               </div>
 
-              <SaveBar onSave={() => localStorage.setItem("siteContent", JSON.stringify(content))}
+              <SectionTitle>Sección motivacional</SectionTitle>
+              <Field label="Título"><Input value={motivacion.titulo} onChange={(e) => setMotivacion({ ...motivacion, titulo: e.target.value })} /></Field>
+              <Field label="Subtítulo"><Input value={motivacion.subtitulo} onChange={(e) => setMotivacion({ ...motivacion, subtitulo: e.target.value })} /></Field>
+              <Field label="Cuerpo del texto"><Textarea rows={3} value={motivacion.cuerpo} onChange={(e) => setMotivacion({ ...motivacion, cuerpo: e.target.value })} /></Field>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Texto del botón"><Input value={motivacion.cta} onChange={(e) => setMotivacion({ ...motivacion, cta: e.target.value })} /></Field>
+                <Field label="URL del botón"><Input value={motivacion.ctaUrl} onChange={(e) => setMotivacion({ ...motivacion, ctaUrl: e.target.value })} /></Field>
+              </div>
+
+              <SaveBar onSave={() => { localStorage.setItem("siteContent", JSON.stringify(content)); localStorage.setItem("motivacionContent", JSON.stringify(motivacion)); }}
                 onReset={() => { localStorage.removeItem("siteContent"); setContent({ heroTitle, heroSubtitle, presidente, actividades, carousel, queHacemos }); }} />
             </>
           )}

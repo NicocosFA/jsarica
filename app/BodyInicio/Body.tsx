@@ -2,7 +2,7 @@ import React from "react";
 import Carrusel from "./Carrusel";
 import Actividades from "./Actividades";
 import QueHacemos from "./QueHacemos";
-import Presidente from "./Presidente";
+import Motivacion from "./Motivacion";
 import LlamarMilitar from "./LlamarMilitar";
 
 export default function Body({ children }: { children?: React.ReactNode }) {
@@ -82,7 +82,7 @@ export default function Body({ children }: { children?: React.ReactNode }) {
           <QueHacemos />
         </div>
       </div>
-      <Presidente />
+      <Motivacion />
       {children}
     </div>
   );
