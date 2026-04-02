@@ -15,6 +15,11 @@ import {
   conmemoraciones,
 } from "../SobreNosotros/sobrenosotroscontent";
 import {
+  comoTrabajamos,
+  infoParticipacion,
+} from "../Actividades/actividadescontent";
+
+import {
   contactoInfo,
   redesSociales,
   llamarMilitar,
@@ -27,7 +32,7 @@ function readStored(key: string) {
   } catch { return null; }
 }
 
-const TABS = ["Inicio", "Sobre Nosotros", "Contacto"] as const;
+const TABS = ["Inicio", "Actividades", "Sobre Nosotros", "Contacto"] as const;
 type Tab = typeof TABS[number];
 
 export default function PanelAdmin() {
@@ -51,6 +56,12 @@ export default function PanelAdmin() {
     conmemoraciones: [...conmemoraciones],
   }));
 
+  // --- Actividades ---
+  const [actividadesTab, setActividadesTab] = useState(() => ({
+    comoTrabajamos: [...comoTrabajamos],
+    infoParticipacion: { ...infoParticipacion },
+  }));
+
   // --- Contacto ---
   const [contacto, setContacto] = useState(() => ({
     contactoInfo: { ...contactoInfo },
@@ -68,6 +79,8 @@ export default function PanelAdmin() {
     if (sn) setSobre((c) => ({ ...c, ...sn }));
     const ct = readStored("contactoContent");
     if (ct) setContacto((c) => ({ ...c, ...ct }));
+    const at = readStored("actividadesContent");
+    if (at) setActividadesTab((c) => ({ ...c, ...at }));
   }, []);
 
   function saveInicio() {
@@ -82,6 +95,11 @@ export default function PanelAdmin() {
 
   function saveContacto() {
     localStorage.setItem("contactoContent", JSON.stringify(contacto));
+    alert("Guardado");
+  }
+
+  function saveActividades() {
+    localStorage.setItem("actividadesContent", JSON.stringify(actividadesTab));
     alert("Guardado");
   }
 
