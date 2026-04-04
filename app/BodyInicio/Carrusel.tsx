@@ -44,7 +44,7 @@ export default function Carrusel() {
         </span>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white drop-shadow-lg leading-tight max-w-4xl uppercase">
           {heroTitle}
-          <span className="block text-red-400">{heroTitleSub}</span>
+          <span className="block text-red-800">{heroTitleSub}</span>
         </h1>
         <p className="mt-4 max-w-2xl text-sm sm:text-base md:text-lg text-white/70 leading-relaxed">
           {heroSubtitle}
