@@ -24,17 +24,6 @@ export default function Motivacion() {
 
   return (
     <section className="w-full bg-red-900 relative overflow-hidden">
-      {/* Puños decorativos */}
-      {[
-        { top: "10%", left: "3%",  size: 70, rotate: -15 },
-        { top: "50%", left: "90%", size: 90, rotate: 20  },
-        { top: "75%", left: "45%", size: 50, rotate: 10  },
-      ].map((p, i) => (
-        <img key={i} aria-hidden="true" src="/images/fondo/fist-fondo.svg" alt=""
-          className="absolute pointer-events-none select-none opacity-10"
-          style={{ top: p.top, left: p.left, width: p.size, height: p.size, transform: `rotate(${p.rotate}deg)` }}
-        />
-      ))}
 
       <div className="mx-auto max-w-6xl px-6 py-20 relative z-10">
         <div className="max-w-3xl mx-auto text-center">

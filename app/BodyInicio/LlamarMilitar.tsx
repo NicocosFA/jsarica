@@ -17,18 +17,7 @@ export default function LlamarMilitar() {
 
   return (
     <section className="w-full bg-red-900 relative overflow-hidden">
-      {/* Puños decorativos */}
-      {[
-        { top: "5%",  left: "88%", size: 80, rotate: 15  },
-        { top: "60%", left: "2%",  size: 60, rotate: -20 },
-        { top: "80%", left: "75%", size: 44, rotate: 30  },
-      ].map((p, i) => (
-        <img key={i} aria-hidden="true" src="/images/fondo/fist-fondo.svg" alt=""
-          className="absolute pointer-events-none select-none opacity-10"
-          style={{ top: p.top, left: p.left, width: p.size, height: p.size, transform: `rotate(${p.rotate}deg)` }}
-        />
-      ))}
-
+      
       <div className="mx-auto max-w-6xl px-6 py-10 relative z-10">
         <div className="text-center mb-8">
           <span className="inline-block bg-red-800 text-white text-xs font-bold tracking-[0.25em] uppercase px-4 py-1 mb-4">
